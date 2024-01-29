@@ -147,7 +147,7 @@ const newPassword = async (req, res)=>{
         entrenador.token=null;
         entrenador.password=password;
         await entrenador.save();
-        register.json({msg:'Contraseña actualizada correctamente!'})
+        res.json({msg:'Contraseña actualizada correctamente!'})
     } catch (error) {
         console.log(error);
     }
