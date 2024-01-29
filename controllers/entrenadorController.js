@@ -1,10 +1,11 @@
 import Entrenador from "../models/entrenador.js";
 import generateJWT from "../helpers/JWTGenerate.js";
 import generateId from "../helpers/idGenerate.js";
+import emailRegistry from "../helpers/emailRegister.js";
 //Users registry
 const register= async(req,res)=>{
      //avoid duplicate users
-     const {email}= req.body;
+     const {email, nombre}= req.body;
 
      const usuarioExistente = await Entrenador.findOne({email});
 
@@ -18,6 +19,14 @@ const register= async(req,res)=>{
        
         const entrenador = Entrenador(req.body);
         const entrenadorRegistrado= await entrenador.save();
+        
+        //send a email of registry
+        emailRegistry({
+            email,
+            nombre,
+            token:entrenadorRegistrado.token
+        });
+
         res.json(entrenadorRegistrado);
     } catch (error) {
         res.json({error:`Error en: ${error.message}`});
