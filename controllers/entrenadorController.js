@@ -2,6 +2,7 @@ import Entrenador from "../models/entrenador.js";
 import generateJWT from "../helpers/JWTGenerate.js";
 import generateId from "../helpers/idGenerate.js";
 import emailRegistry from "../helpers/emailRegister.js";
+import emailForgot from "../helpers/emailForgotPass.js";
 //Users registry
 const register= async(req,res)=>{
      //avoid duplicate users
@@ -102,6 +103,14 @@ const forgotPassword = async(req, res)=>{
     try {
         existUser.token = generateId();
         await existUser.save();
+        
+        //Send instruction for generate a new pass
+        emailForgot({
+            email,
+            nombre:existUser.nombre,
+            token:existUser.token
+        });
+
         return res.json({msg:'Hemos enviado un email con las instrucciones para reestablecer tus credenciales'});
     } catch (error) {
         console.log(error);
