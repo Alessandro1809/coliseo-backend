@@ -37,7 +37,7 @@ const register= async(req,res)=>{
 //profile data
 const profile=async(req,res)=>{
     const {entrenador}=req;
-    return res.json({perfil:entrenador});
+    return res.json(entrenador);
     
 }
 
@@ -87,7 +87,7 @@ const authenticate = async(req, res)=>{
     const error = new Error('Contraseña incorrecta');
     return res.status(404).json({msg:error.message});
    }
-   res.json({msg:"Autenticado"})
+   
 }
 
 //forgot password function
