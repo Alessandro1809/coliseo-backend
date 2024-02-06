@@ -81,7 +81,13 @@ const authenticate = async(req, res)=>{
    //authenticate
    if (await user.verifyPassword(password)) {
     //verify JWT
-    res.json({token: generateJWT(user.id)});
+    res.json({
+        _id:user._id,
+        nombre:user.nombre,
+        email:user.email,
+        telefono: user.telefono,
+        token: generateJWT(user.id)
+    });
 
    }else{
     const error = new Error('Contraseña incorrecta');
