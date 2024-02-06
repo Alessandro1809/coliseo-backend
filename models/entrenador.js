@@ -3,7 +3,12 @@ import bcrypt from 'bcrypt';
 import generateId from "../helpers/idGenerate.js";
 
 const entrenadorSchema = mongoose.Schema({
-
+    googleId :{
+        type:String,
+    },
+    DisplayName :{
+        type:String,
+    },
     nombre:{
         type:String,
         required:true,
@@ -20,8 +25,11 @@ const entrenadorSchema = mongoose.Schema({
     },
     telefono:{
         type:String,
-        required:true,
+        required:false,
         trim:true
+    },
+    image:{
+        type:String
     },
     token:{
         type:String,

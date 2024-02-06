@@ -157,7 +157,6 @@ const newPassword = async (req, res)=>{
     } catch (error) {
         console.log(error);
     }
-
 }
 
 export {
