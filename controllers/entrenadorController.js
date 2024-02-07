@@ -3,6 +3,14 @@ import generateJWT from "../helpers/JWTGenerate.js";
 import generateId from "../helpers/idGenerate.js";
 import emailRegistry from "../helpers/emailRegister.js";
 import emailForgot from "../helpers/emailForgotPass.js";
+
+//google creds
+
+const clientid = "903352777938-truc1nmqquvepjmor79749k3fhgr7sbv.apps.googleusercontent.com";
+const clientsecret ="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";
+
+// User login with google
+
 //Users registry
 const register= async(req,res)=>{
      //avoid duplicate users
