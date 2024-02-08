@@ -6,7 +6,7 @@ const entrenadorSchema = mongoose.Schema({
     googleId :{
         type:String,
     },
-    DisplayName :{
+    displayName :{
         type:String,
     },
     nombre:{

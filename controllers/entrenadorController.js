@@ -3,19 +3,34 @@ import generateJWT from "../helpers/JWTGenerate.js";
 import generateId from "../helpers/idGenerate.js";
 import emailRegistry from "../helpers/emailRegister.js";
 import emailForgot from "../helpers/emailForgotPass.js";
-
+import session from 'express-session';
+import passport from 'passport';
+import { Strategy as Oauth2Strategy } from 'passport-google-oauth2';
 //google creds
-
-const clientid = "903352777938-truc1nmqquvepjmor79749k3fhgr7sbv.apps.googleusercontent.com";
-const clientsecret ="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";
-
-// User login with google
-
+//Users registry
+const GRegistry= async (accessToken,refreshToken,profile,done)=>{
+    try {
+        let user = await Entrenador.findOne({googleId:profile.id});
+        if (!user) {
+            user = new Entrenador({
+                googleId:profile.id,
+                nombre:profile.displayName,
+                displayName:profile.displayName,
+                email:profile.emails[0].value,
+                password:generateId(),
+                image:profile.photos[0].value
+            });
+            await user.save();
+        }
+        return done(null,user)
+    } catch (error) {
+        return done(error,null);
+    }
+}
 //Users registry
 const register= async(req,res)=>{
      //avoid duplicate users
      const {email, nombre}= req.body;
-
      const usuarioExistente = await Entrenador.findOne({email});
 
      if (usuarioExistente) {
@@ -174,5 +189,6 @@ export {
     authenticate,
     forgotPassword,
     verifyToken,
-    newPassword
+    newPassword,
+    GRegistry
 }
