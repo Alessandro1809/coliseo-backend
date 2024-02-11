@@ -3,30 +3,53 @@ import generateJWT from "../helpers/JWTGenerate.js";
 import generateId from "../helpers/idGenerate.js";
 import emailRegistry from "../helpers/emailRegister.js";
 import emailForgot from "../helpers/emailForgotPass.js";
-import session from 'express-session';
-import passport from 'passport';
-import { Strategy as Oauth2Strategy } from 'passport-google-oauth2';
-//google creds
-//Users registry
-const GRegistry= async (accessToken,refreshToken,profile,done)=>{
-    try {
-        let user = await Entrenador.findOne({googleId:profile.id});
-        if (!user) {
-            user = new Entrenador({
-                googleId:profile.id,
-                nombre:profile.displayName,
-                displayName:profile.displayName,
-                email:profile.emails[0].value,
-                password:generateId(),
-                image:profile.photos[0].value
-            });
-            await user.save();
-        }
-        return done(null,user)
-    } catch (error) {
-        return done(error,null);
+
+
+const googleAuth = async (req,res)=>{
+    const {email,name,sub}=req.body;
+    
+   try {
+
+    const user = await Entrenador.findOne({email});
+    if (!user) {
+        const user = new Entrenador({
+            googleId: sub,
+            nombre: name,      
+            email: email,
+            password: generateId(),
+           
+        });
+
+         const saveUser = await user.save();
+         //send a email of registry
+         emailRegistry({
+            email,
+            nombre: name,
+            token:saveUser.token
+        });
+        res.json({
+            _id:user._id,
+            nombre:user.nombre,
+            email:user.email,
+            telefono: user.telefono,
+            token: generateJWT(user.id)
+        });
+        return
     }
+    
+        res.json({
+            _id:user._id,
+            nombre:user.nombre,
+            email:user.email,
+            telefono: user.telefono,
+            token: generateJWT(user.id)
+        });
+   } catch (error) {
+    console.log(error)
+   }
 }
+
+
 //Users registry
 const register= async(req,res)=>{
      //avoid duplicate users
@@ -190,5 +213,5 @@ export {
     forgotPassword,
     verifyToken,
     newPassword,
-    GRegistry
+    googleAuth
 }
