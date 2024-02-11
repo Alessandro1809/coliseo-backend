@@ -4,13 +4,10 @@ import dotenv from 'dotenv';
 import rutasEntrenador from './routes/rutasEntrenador.js';
 import rutasCliente from './routes/rutasCliente.js';
 import cors from 'cors';
-import Entrenador from './models/entrenador.js';
-import generateId from './helpers/idGenerate.js';
-import session from 'express-session';
-import passport from 'passport';
-import { Strategy as Oauth2Strategy } from 'passport-google-oauth2';
+
 //conexion a la base de datos
 import connectDataBase from './config/db.js';
+
 const app = express();
 app.use(express.json());
 //reading environment variables

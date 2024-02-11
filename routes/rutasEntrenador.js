@@ -10,7 +10,7 @@ import { register,
         newPassword,
         googleAuth
       } from "../controllers/entrenadorController.js";
-import passport from "passport";
+
 
 const router = express.Router();
 
